@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Byline — Tech Writing Portfolio</title>
+  <meta name="description" content="Tech writing portfolio — API docs, developer guides, tutorials and technical essays."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=DM+Mono:wght@400;500&family=Lora:wght@400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:      #FBF7F0;
+      --ink:        #1C1410;
+      --rust:       #C4522A;
+      --rust-light: #F5E8E2;
+      --sage:       #4A6741;
+      --sage-light: #E4EDE3;
+      --muted:      #7A6A5A;
+      --border:     #D9CFBF;
+      --dark:       #2A1F14;
+      --card:       #FFFDF9;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--cream);
+      border-bottom: 1.5px solid var(--ink);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-logo em { color: var(--rust); font-style: italic; }
+
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+
+    nav ul a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--rust); }
+
+    /* ── HERO ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1.5px solid var(--ink);
+      min-height: 88vh;
+    }
+
+    .hero-left {
+      padding: 5rem 3rem 4rem 2.5rem;
+      border-right: 1.5px solid var(--ink);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1.25rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -1.5px;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 em { font-style: italic; color: var(--rust); }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 400px;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+
+    .btn-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.75rem 1.5rem;
+      border: 1.5px solid var(--ink);
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-dark { background: var(--ink); color: var(--cream); }
+    .btn-dark:hover { background: var(--rust); border-color: var(--rust); }
+
+    .btn-light { background: transparent; color: var(--ink); }
+    .btn-light:hover { background: var(--rust-light); border-color: var(--rust); color: var(--rust); }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2.5rem; }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    /* hero right — dark panel */
+    .hero-right {
+      background: var(--dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 3rem 2.5rem;
+      gap: 1.5rem;
+    }
+
+    .hero-stat {
+      border-top: 1px solid #3a3028;
+      padding-top: 1.25rem;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #7a6a5a;
+      margin-top: 0.3rem;
+    }
+
+    .hero-quote {
+      background: var(--rust);
+      padding: 1.25rem 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .hero-quote p {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #fff;
+      line-height: 1.7;
+      opacity: 0.9;
+    }
+
+    .hero-quote cite {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-top: 0.6rem;
+      font-style: normal;
+    }
+
+    /* ── SECTION SHARED ── */
+    .section-wrap { padding: 4rem 2.5rem; border-top: 1.5px solid var(--ink); }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── WRITING / PORTFOLIO ── */
+    .featured {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      border: 1.5px solid var(--ink);
+      margin-bottom: -1.5px;
+    }
+
+    .featured-tab {
+      background: var(--rust);
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+    }
+
+    .featured-tab span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .featured-body {
+      padding: 2rem 2rem 2rem 2rem;
+      border-left: 1.5px solid var(--ink);
+      background: var(--card);
+    }
+
+    .card-type {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-bottom: 0.65rem;
+    }
+
+    .card-excerpt {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 1.25rem;
+      max-width: 600px;
+    }
+
+    .card-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .writing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1.5px solid var(--ink);
+      border-top: none;
+    }
+
+    .writing-card {
+      padding: 1.75rem;
+      border-right: 1.5px solid var(--ink);
+      border-bottom: 1.5px solid var(--ink);
+      background: var(--card);
+      display: flex;
+      flex-direction: column;
+      transition: background 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .writing-card:nth-child(3n) { border-right: none; }
+    .writing-card:hover { background: var(--rust-light); }
+
+    .writing-card .card-title { font-size: 1rem; margin-bottom: 0.5rem; }
+    .writing-card .card-excerpt { font-size: 0.82rem; flex: 1; margin-bottom: 0.75rem; }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      border-top: 1.5px solid var(--ink);
+    }
+
+    .about-left { padding: 4rem 3rem 4rem 2.5rem; border-right: 1.5px solid var(--ink); }
+    .about-right { padding: 4rem 2.5rem; background: var(--dark); }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+    }
+
+    h2 em { font-style: italic; color: var(--rust); }
+
+    .about-body {
+      font-size: 0.93rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 1.25rem;
+    }
+
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+
+    .skill-pill {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.85rem;
+      border: 1px solid var(--sage);
+      color: var(--sage);
+      background: var(--sage-light);
+    }
+
+    .about-right .section-label { color: #888; }
+    .about-right .section-label::after { background: #3a3028; }
+
+    .stat-row { margin-bottom: 2rem; }
+
+    .about-right .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      color: var(--cream);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .about-right .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #7a6a5a;
+      margin-top: 0.25rem;
+    }
+
+    .contact-links { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 2rem; }
+
+    .contact-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: #888;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+
+    .contact-link::before { content: '→'; color: var(--rust); }
+    .contact-link:hover { color: var(--rust); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1.5px solid var(--ink);
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--cream);
+    }
+
+    footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    .footer-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--ink);
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 3rem 1.5rem; border-right: none; border-bottom: 1.5px solid var(--ink); }
+      .hero-right { padding: 2.5rem 1.5rem; flex-direction: row; flex-wrap: wrap; gap: 1.5rem; }
+      .hero-stat { border-top: none; border-left: 1px solid #3a3028; padding: 0 0 0 1rem; }
+      .hero-quote { display: none; }
+      .writing-grid { grid-template-columns: 1fr; }
+      .writing-card { border-right: none !important; }
+      .featured { grid-template-columns: 1fr; }
+      .featured-tab { writing-mode: horizontal-tb; transform: none; padding: 0.75rem 1rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-left { border-right: none; border-bottom: 1.5px solid #3a3028; padding: 3rem 1.5rem; }
+      .about-right { padding: 3rem 1.5rem; }
+      nav ul { gap: 1rem; }
+      .section-wrap { padding: 3rem 1.5rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><em>By</em>line</a>
+  <ul>
+    <li><a href="#writing">Writing</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="mailto:hello@yoursite.com">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <div>
+      <p class="eyebrow">Tech Writing Portfolio</p>
+      <h1>Making the<br><em>complex,</em><br>human.</h1>
+      <p class="hero-sub">
+        I write documentation, developer guides, and technical essays that don't require a CS degree to enjoy — just curiosity.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn-dark" href="#writing">Read my work</a>
+        <a class="btn btn-light" href="#about">About me</a>
+      </div>
+    </div>
+    <div class="tag-row">
+      <span class="tag">API docs</span>
+      <span class="tag">Dev guides</span>
+      <span class="tag">Tutorials</span>
+      <span class="tag">Release notes</span>
+      <span class="tag">Technical essays</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-quote">
+      <p>"Rare clarity in technical writing — the kind that makes engineers forward links to their PMs."</p>
+      <cite>— Client feedback</cite>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num">48</div>
+      <div class="stat-label">Articles & guides published</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num">6+</div>
+      <div class="stat-label">Years writing about tech</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Developer products documented</div>
+    </div>
+  </div>
+</section>
+
+<!-- WRITING -->
+<section class="section-wrap" id="writing">
+  <p class="section-label">Writing &amp; portfolio</p>
+
+  <!-- Featured piece -->
+  <div class="featured">
+    <div class="featured-tab"><span>Featured</span></div>
+    <div class="featured-body">
+      <div class="card-type" style="color: var(--rust);">
+        <span class="dot" style="background: var(--rust);"></span> Long read
+      </div>
+      <p class="card-title">The hidden cost of unclear documentation: a developer's time</p>
+      <p class="card-excerpt">Every ambiguous sentence in your docs costs real engineering hours. Here's how to audit your documentation the way you'd audit your code — ruthlessly, with metrics.</p>
+      <div style="display:flex; align-items:center; gap:1.25rem;">
+        <span class="card-meta">March 2025 · 12 min read</span>
+        <a class="btn btn-light" href="#" style="padding:0.4rem 1rem; font-size:0.62rem;">Read →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="writing-grid">
+    <a class="writing-card" href="#">
+      <div class="card-type" style="color: var(--sage);">
+        <span class="dot" style="background: var(--sage);"></span> Tutorial
+      </div>
+      <p class="card-title">Zero-to-webhook in 15 minutes</p>
+      <p class="card-excerpt">A no-fluff guide to setting up your first webhook listener, handling retries, and not panicking when Stripe sends duplicate events.</p>
+      <span class="card-meta">Jan 2025 · 8 min</span>
+    </a>
+    <a class="writing-card" href="#">
+      <div class="card-type" style="color: #8B6914;">
+        <span class="dot" style="background: #C49A1E;"></span> API Reference
+      </div>
+      <p class="card-title">Writing API docs that developers actually bookmark</p>
+      <p class="card-excerpt">The anatomy of a great endpoint doc: what goes where, which examples to include, and why your error codes matter more than your happy path.</p>
+      <span class="card-meta">Nov 2024 · 6 min</span>
+    </a>
+    <a class="writing-card" href="#">
+      <div class="card-type" style="color: var(--rust);">
+        <span class="dot" style="background: var(--rust);"></span> Essay
+      </div>
+      <p class="card-title">On writing for engineers who hate reading docs</p>
+      <p class="card-excerpt">They don't hate documentation. They hate bad documentation. Understanding this changes everything about how you approach the craft.</p>
+      <span class="card-meta">Oct 2024 · 5 min</span>
+    </a>
+    <a class="writing-card" href="#">
+      <div class="card-type" style="color: var(--sage);">
+        <span class="dot" style="background: var(--sage);"></span> Case Study
+      </div>
+      <p class="card-title">Redesigning a developer onboarding flow from scratch</p>
+      <p class="card-excerpt">How we cut time-to-first-API-call from 47 minutes to 9 by removing information, not adding it.</p>
+      <span class="card-meta">Sep 2024 · 10 min</span>
+    </a>
+    <a class="writing-card" href="#">
+      <div class="card-type" style="color: #8B6914;">
+        <span class="dot" style="background: #C49A1E;"></span> Guide
+      </div>
+      <p class="card-title">CLI documentation patterns that scale</p>
+      <p class="card-excerpt">A systematic look at how the best CLIs (git, docker, kubectl) document themselves and what you can steal for your own tool.</p>
+      <span class="card-meta">Aug 2024 · 7 min</span>
+    </a>
+    <a class="writing-card" href="#">
+      <div class="card-type" style="color: var(--rust);">
+        <span class="dot" style="background: var(--rust);"></span> Essay
+      </div>
+      <p class="card-title">Error messages are UX copy. Treat them that way.</p>
+      <p class="card-excerpt">400 Bad Request tells a developer nothing. "Missing required field: user_id" tells them everything. The difference is a technical writer who cares.</p>
+      <span class="card-meta">Jul 2024 · 4 min</span>
+    </a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="about-grid" id="about">
+  <div class="about-left">
+    <p class="section-label">About me</p>
+    <h2>A writer who <em>learned to code,</em><br>not the other way around.</h2>
+    <p class="about-body">
+      I started as a journalist covering the Indian startup scene, then fell in love with the strange, specific challenge of explaining software to the people who build it. Now I write docs, guides, and developer content for tech companies globally.
+    </p>
+    <p class="about-body">
+      Good technical writing is an act of empathy — standing between the person who built the thing and the person who needs to use it, and making sure neither side feels alone.
+    </p>
+    <div class="skill-pills">
+      <span class="skill-pill">REST APIs</span>
+      <span class="skill-pill">Developer experience</span>
+      <span class="skill-pill">Docs-as-code</span>
+      <span class="skill-pill">OpenAPI / Swagger</span>
+      <span class="skill-pill">Markdown + MDX</span>
+      <span class="skill-pill">Product writing</span>
+      <span class="skill-pill">Information architecture</span>
+    </div>
+  </div>
+  <div class="about-right">
+    <p class="section-label" style="color:#888;">Get in touch</p>
+    <div class="contact-links">
+      <a class="contact-link" href="mailto:hello@yoursite.com">hello@yoursite.com</a>
+      <a class="contact-link" href="https://linkedin.com/in/yourhandle" target="_blank">LinkedIn</a>
+      <a class="contact-link" href="https://github.com/yourusername" target="_blank">GitHub</a>
+      <a class="contact-link" href="https://hashnode.com/@yourhandle" target="_blank">Hashnode</a>
+    </div>
+    <p class="section-label" style="color:#888; margin-top:3rem;">Experience</p>
+    <div class="stat-row">
+      <div class="stat-num">6+</div>
+      <div class="stat-label">Years writing about tech</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Developer products documented</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-num">48</div>
+      <div class="stat-label">Articles & guides published</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-name">Byline</span>
+  <p>Built with care · Mumbai, India</p>
+  <p>© 2025</p>
+</footer>
+
+</body>
+</html>
